@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,217 +15,144 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hendrizzzz.dba.R
 import com.hendrizzzz.dba.ui.theme.DBATheme
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+
 
 class HomeView : ComponentActivity() {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             DBATheme {
-                MainScreen()
+                // Initialize NavHostController
+                val navController = rememberNavController()
+                NavigationGraph(navController) // Call the NavigationGraph
             }
         }
     }
 }
 
 @Composable
-fun MainScreen() {
-    var message by remember { mutableStateOf("") } // State to hold the message
-
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Header(onIconClick = { message = it }) // Pass the message update function to the Header
-        Spacer(modifier = Modifier.weight(1f)) // Spacer to push the button panel to the bottom
-
-        // Display the message in the center of the screen
-        Text(
-            text = message,
-            color = Color.Black, // Ensure this is visible
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally) // Center the text
-                .padding(16.dp) // Add some padding for aesthetics
-        )
-
-        // Bottom navigation panel, do not show the message here
-        BottomNavigationPanel(onButtonClick = { message = it }) // Pass the message to update on button click
+fun NavigationGraph(navController: NavHostController) {
+    NavHost(navController, startDestination = "Home") {
+        composable("Home") { HomeScreen(navController) }
+        composable("Games") { GamesScreen(navController) }
+        composable("Teams") { TeamsScreen(navController) }
+        composable("Players") { PlayersScreen(navController) }
+        composable("Discover") { DiscoverScreen(navController) }
     }
 }
 
 
+@Composable
+fun HomeScreen(navController: NavHostController) {
+    var selectedButton by remember { mutableStateOf("Home") }
+    var message by remember { mutableStateOf("") }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        Header(onIconClick = { message = it })
+
+        Text(
+            text = message,
+            color = Color.Black,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(16.dp)
+        )
+
+        Text(
+            text = "Welcome to Home",
+            style = MaterialTheme.typography.headlineLarge,
+            modifier = Modifier.padding(16.dp)
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        BottomNavigationPanel(selectedButton = selectedButton, onButtonClick = { button ->
+            selectedButton = button
+            when (button) {
+                "Games" -> navController.navigate("Games")
+                "Teams" -> navController.navigate("Teams")
+                "Players" -> navController.navigate("Players")
+                "Discover" -> navController.navigate("Discover")
+            }
+        })
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Header(onIconClick: (String) -> Unit) {
-    TopAppBar(
-        title = {
-            // Leaving this empty or set to null keeps it without a title
-            Spacer(modifier = Modifier.width(0.dp))
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Black,
-            titleContentColor = Color.Black
-        ),
-        navigationIcon = {
-            // Left side: Logo as Icon
-            IconButton(onClick = { onIconClick("Logo clicked!") }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.dba_logo),
-                    contentDescription = "Logo",
-                    modifier = Modifier.size(300.dp)
-                )
-            }
-        },
-        actions = {
-            // Right side: Search Icon
-            IconButton(onClick = { onIconClick("Search clicked!") }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.search),
-                    contentDescription = "Search"
-                )
-            }
-
-            // User Icon
-            IconButton(onClick = { onIconClick("User clicked!") }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.user),
-                    contentDescription = "User"
-                )
-            }
-        }
-    )
-}
-
-@Composable
-fun BottomNavigationPanel(onButtonClick: (String) -> Unit) {
-    // Create a bottom navigation panel
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.Yellow)
-            .padding(0.dp),
-        horizontalAlignment = Alignment.CenterHorizontally // Center the content
+            .shadow(elevation = 12.dp, shape = RectangleShape, clip = false)
+            .background(Color.Black)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            // Button for Games
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .clickable { onButtonClick("Games clicked!") } // Apply click listener to entire column
-                    .padding(top = 5.dp, bottom = 0.dp)
-                    .width(50.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.basketball),
-                    contentDescription = "Games",
-                    modifier = Modifier.size(24.dp)
-                )
-                Text(
-                    text = "Games",
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(0.dp)
-                )
-            }
+        TopAppBar(
+            title = {
+                Spacer(modifier = Modifier.width(0.dp))
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Color.Transparent,
+                titleContentColor = Color.White
+            ),
+            navigationIcon = {
+                IconButton(
+                    onClick = { onIconClick("Logo clicked!") },
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .size(80.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.dba_logo),
+                        contentDescription = "Logo",
+                        tint = Color.White,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            },
+            actions = {
+                IconButton(
+                    onClick = { onIconClick("Search clicked!") },
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .shadow(elevation = 4.dp, shape = RectangleShape, clip = false)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.search),
+                        contentDescription = "Search",
+                        tint = Color.White
+                    )
+                }
 
-            // Button for Teams
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .clickable { onButtonClick("Teams clicked!") }
-                    .padding(top = 5.dp, bottom = 0.dp)
-                    .width(50.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.teams),
-                    contentDescription = "Teams",
-                    modifier = Modifier.size(24.dp)
-                )
-                Text(
-                    text = "Teams",
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(0.dp)
-                )
+                IconButton(
+                    onClick = { onIconClick("User clicked!") },
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .shadow(elevation = 4.dp, shape = RectangleShape, clip = false)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.user),
+                        contentDescription = "User",
+                        tint = Color.White
+                    )
+                }
             }
-
-            // Button for Home
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .clickable { onButtonClick("Home clicked!") }
-                    .padding(top = 5.dp, bottom = 0.dp)
-                    .width(50.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.home),
-                    contentDescription = "Home",
-                    modifier = Modifier.size(24.dp)
-                )
-                Text(
-                    text = "Home",
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(0.dp)
-                )
-            }
-
-            // Button for Players
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .clickable { onButtonClick("Players clicked!") }
-                    .padding(top = 5.dp, bottom = 0.dp)
-                    .width(50.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.players),
-                    contentDescription = "Players",
-                    modifier = Modifier.size(24.dp)
-                )
-                Text(
-                    text = "Players",
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(0.dp)
-                )
-            }
-
-            // Button for Discover
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .clickable { onButtonClick("Discover clicked!") }
-                    .padding(top = 5.dp, bottom = 0.dp)
-                    .width(50.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.discover),
-                    contentDescription = "Discover",
-                    modifier = Modifier.size(24.dp).padding(0.dp)
-                )
-                Text(
-                    text = "Discover",
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(0.dp)
-                )
-            }
-        }
+        )
     }
 }
-
-
-
-
-
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewMainScreen() {
     DBATheme {
-        MainScreen()
+        val navController = rememberNavController()
+        HomeScreen(navController = navController)
     }
 }

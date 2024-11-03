@@ -40,6 +40,11 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.navigation:navigation-compose:2.8.3")
+    implementation ("androidx.compose.material:material:1.7.5") // Check for the latest version
+    implementation ("androidx.compose.ui:ui:1.7.5") // Also ensure this is included
+    implementation ("androidx.compose.ui:ui-tooling-preview:1.7.5")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
