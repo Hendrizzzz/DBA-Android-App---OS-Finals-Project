@@ -1,0 +1,28 @@
+# Android Studio files
+.idea/
+*.iml
+
+# Build output
+/build/
+*/build/
+*.apk
+*.ap_
+*.dex
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Gradle files
+.gradle/
+*/.gradle/
+
+# Generated files
+generated/
+*/generated/
+
+# Log files
+*.log
+
+# Other temporary files
+*.tmp
+*.DS_Store
