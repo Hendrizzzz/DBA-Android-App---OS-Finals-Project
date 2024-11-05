@@ -1,0 +1,48 @@
+[versions]
+agp = "8.7.2"                    # Android Gradle Plugin
+kotlin = "2.0.0"                  # Updated Kotlin version
+coreKtx = "1.15.0"                # AndroidX Core KTX
+junit = "4.13.2"                  # JUnit
+junitVersion = "1.2.1"            # JUnit version for AndroidX
+espressoCore = "3.6.1"            # Updated Espresso Core
+lifecycleRuntimeKtx = "2.8.7"     # Updated Lifecycle Runtime KTX
+activityCompose = "1.9.3"         # Activity Compose
+composeBom = "2024.10.01"         # Compose BOM
+lifecycleRuntimeKtxVersion = "2.8.7"
+material = "1.12.0"               # Updated Material Components
+compose = "1.7.5"                 # Compose UI
+material3 = "1.3.1"               # Material 3
+materialVersion = "1.7.5"
+navigationCompose = "2.8.3"
+uiTestJunit4 = "1.7.5"
+uiToolingPreview = "1.7.5"
+uiViewbinding = "1.7.5"
+androidxCompose = "1.4.0"         # Add Compose version if needed
+androidxNavigation = "2.5.0"      # Add Navigation version if needed
+androidxLifecycle = "2.6.0"       # Add Lifecycle version if needed
+androidxMaterial = "1.9.0"        # Add Material version if needed
+androidxCore = "1.10.0"           # Add Core version if needed
+constraintLayout = "2.1.4"        # Add ConstraintLayout version if needed
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-viewinterop = { group = "androidx.compose.ui", name = "ui-viewinterop", version.ref = "androidxCompose" } # Reference for viewinterop
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintLayout" } # Reference for ConstraintLayout
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
